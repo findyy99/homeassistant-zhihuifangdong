@@ -6,12 +6,10 @@
   ],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://www.home-assistant.io/integrations/zhihuifangdong",
+  "documentation": "https://github.com/findyy99/homeassistant-zhihuifangdong/blob/main/README.md",
+  "issue_tracker": "https://github.com/findyy99/homeassistant-zhihuifangdong/issues",
   "homekit": {},
   "iot_class": "cloud_polling",
-  "quality_scale": "bronze",
   "requirements": [],
-  "ssdp": [],
-  "zeroconf": [],
   "version": "1.0.0"
 }
