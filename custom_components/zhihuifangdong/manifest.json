@@ -7,9 +7,9 @@
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/findyy99/homeassistant-zhihuifangdong/blob/main/README.md",
-  "issue_tracker": "https://github.com/findyy99/homeassistant-zhihuifangdong/issues",
   "homekit": {},
   "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/findyy99/homeassistant-zhihuifangdong/issues",
   "requirements": [],
   "version": "1.0.0"
 }
