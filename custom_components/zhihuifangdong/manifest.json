@@ -1,0 +1,17 @@
+{
+  "domain": "zhihuifangdong",
+  "name": "Zhihuifangdong Apartment",
+  "codeowners": [
+    "@findyy99"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://www.home-assistant.io/integrations/zhihuifangdong",
+  "homekit": {},
+  "iot_class": "cloud_polling",
+  "quality_scale": "bronze",
+  "requirements": [],
+  "ssdp": [],
+  "zeroconf": [],
+  "version": "1.0.0"
+}
