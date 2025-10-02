@@ -1,6 +1,6 @@
 # 📡 Zhihuifangdong for Home Assistant
 
-一个非官方的 [智慧房东](https://api.zhihuifangdong.net) 电表集成，支持在 Home Assistant 中查看电表的余额、电量、功率、电压、电流等信息。
+一个非官方的 [智慧房东](https://www.zhihuifangdong.net/) 电表集成，支持在 Home Assistant 中查看电表的余额、电量、功率、电压、电流等信息。
 
 ⚠️ **免责声明**：本集成基于抓包接口开发，仅供学习和个人使用，请勿用于商业用途。
 
@@ -12,7 +12,7 @@
 * 显示剩余电量（kWh）
 * 显示电价（元/kWh）
 * 显示剩余天数预测
-* 传感器：电压、电流、功率（每30分钟更新一次）
+* 传感器：电压、电流、功率（由于电表每小时上传一次数据，故每30分钟更新一次）
 * 支持多个电表（自动检测 ID）
 
 ---
@@ -25,7 +25,7 @@
 2. 添加仓库地址：
 
    ```
-   https://github.com/findyy99/ha-zhihuifangdong
+   https://github.com/findyy99/homeassistant-zhihuifangdong
    ```
 
    类型选择 **集成**
@@ -42,22 +42,10 @@
    ```
 3. 重启 Home Assistant
 
----
+### 查看实体
+然后重启 Home Assistant，即可在 **实体列表** 中看到如下传感器（基于前一个小时的数据）：
 
-## ⚙️ 配置方法
-
-安装完成后，在 `configuration.yaml` 中添加：
-
-```yaml
-sensor:
-  - platform: zhihuifangdong
-    username: "你的账号"
-    password: "你的密码"
-```
-
-然后重启 Home Assistant，即可在 **实体列表** 中看到如下传感器：
-
-* `sensor.zhihuifangdong_electricity` → 剩余电量
+* `sensor.zhihuifangdong_electricity` → 电表剩余电量
 * `sensor.zhihuifangdong_voltage` → 电压
 * `sensor.zhihuifangdong_current` → 电流
 * `sensor.zhihuifangdong_power` → 功率
@@ -79,4 +67,4 @@ sensor:
 
 ## 📜 许可证
 
-MIT License
+Apache License

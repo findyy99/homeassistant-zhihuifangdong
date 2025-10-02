@@ -36,7 +36,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     _LOGGER.info("instantiating ZhihuifangdongApi for user %s", username)
     api = ZhihuifangdongApi(hass, username, password)
 
-    _LOGGER.info("trying login in")
+    _LOGGER.info("trying to login in")
     try:
         await api.async_login()
         _LOGGER.info("validate_input: login successful for %s", username)
