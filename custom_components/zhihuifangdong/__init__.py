@@ -74,18 +74,20 @@ class ZhihuifangdongApi:
         except Exception as err:
             raise ConfigEntryNotReady("Unable to reach Zhihuifangdong API") from err
 
-        token = None
         if isinstance(json_data, dict):
-            token = (
-                (json_data.get("data") or {}).get("token")
-                or json_data.get("token")
-                or json_data.get("access_token")
-            )
+            code = json_data.get("code")
+            if code == "PASSWORD_ERROR":
+                raise ConfigEntryAuthFailed("Invalid Zhihuifangdong credentials")
+            elif not json_data.get("success", False):
+                raise ConfigEntryNotReady(f"Login failed: {json_data.get('message')}")
+
+        token = (
+            (json_data.get("data") or {}).get("token")
+            or json_data.get("token")
+            or json_data.get("access_token")
+        )
 
         if not token:
-            code = json_data.get("code") if isinstance(json_data, dict) else None
-            if code in (401, 403, "401", "403"):
-                raise ConfigEntryAuthFailed("Invalid Zhihuifangdong credentials")
             raise ConfigEntryNotReady("Login succeeded but no token returned")
 
         self.token = token
