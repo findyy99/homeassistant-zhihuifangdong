@@ -50,6 +50,30 @@
 * `sensor.zhihuifangdong_current` → 电流
 * `sensor.zhihuifangdong_power` → 功率
 
+### 能源面板支持 ✅
+
+新增一个累计用电量传感器：`sensor.zhihuifangdong_electricEnergy`（单位 kWh），
+该传感器使用 **device_class=energy** 和 **state_class=total_increasing**，可在 Home Assistant 的 **能源 (Energy)** 配置中被识别并选择用于计算耗电量与费用。
+
+如何查看“今天 / 本月”用电量：
+- 在能源面板中选择该用电量传感器，Home Assistant 会基于长期统计显示日/月消耗。
+- 如果你想要明确的“每日/每月”读数，也可以使用 `utility_meter` 集成为该传感器建立按日或按月重置的计量表（示例：`utility_meter.daily` 或 `utility_meter.monthly`）。
+
+示例（configuration.yaml）:
+
+```yaml
+utility_meter:
+   zhihuifangdong_daily:
+      source: sensor.zhihuifangdong_electricEnergy
+      cycle: daily
+
+   zhihuifangdong_monthly:
+      source: sensor.zhihuifangdong_electricEnergy
+      cycle: monthly
+```
+
+然后在实体列表里添加 `sensor.zhihuifangdong_electricEnergy` 或对应的 utility_meter 实体到能源面板中。
+
 ---
 
 ## 🛠️ 计划支持

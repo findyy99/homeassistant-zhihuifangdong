@@ -1,6 +1,10 @@
 from __future__ import annotations
 import logging
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import (
+    SensorEntity,
+    SensorDeviceClass,
+    SensorStateClass,
+)
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.core import HomeAssistant
 from datetime import timedelta
@@ -21,6 +25,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ZhihuifangdongConfigEntr
 
     async_add_entities([
         ZhihuifangdongMeterSensor(coordinator, "residualElectricity", "kWh", "剩余电量"),
+        # Cumulative energy sensor for Home Assistant Energy dashboard
+        ZhihuifangdongMeterSensor(
+            coordinator,
+            "electricEnergy",
+            "kWh",
+            "用电量",
+            device_class=SensorDeviceClass.ENERGY,
+            state_class=SensorStateClass.TOTAL_INCREASING,
+        ),
         ZhihuifangdongMeterSensor(coordinator, "voltage", "V", "电压"),
         ZhihuifangdongMeterSensor(coordinator, "electricity", "A", "电流"),
         ZhihuifangdongMeterSensor(coordinator, "power", "W", "功率", is_calculated=True)
@@ -96,13 +109,27 @@ class ZhihuifangdongDataUpdateCoordinator(DataUpdateCoordinator):
 
 
 class ZhihuifangdongMeterSensor(SensorEntity):
-    def __init__(self, coordinator: ZhihuifangdongDataUpdateCoordinator, field: str, unit: str, name: str, is_calculated: bool = False) -> None:
+    def __init__(
+        self,
+        coordinator: ZhihuifangdongDataUpdateCoordinator,
+        field: str,
+        unit: str,
+        name: str,
+        is_calculated: bool = False,
+        device_class: SensorDeviceClass | None = None,
+        state_class: SensorStateClass | None = None,
+    ) -> None:
         self.coordinator = coordinator
         self.field = field
         self.unit = unit
         self._name = name
         self.is_calculated = is_calculated
         self._attr_unique_id = f"zhihuifangdong_{field}_sensor"
+        # optional attributes for energy sensors
+        if device_class is not None:
+            self._attr_device_class = device_class
+        if state_class is not None:
+            self._attr_state_class = state_class
 
     @property
     def name(self):
@@ -117,7 +144,14 @@ class ZhihuifangdongMeterSensor(SensorEntity):
                 return round(voltage * current, 2)  # Power Calculation: P = U * I
             except Exception:
                 return None
-        return self.coordinator.data.get(self.field)
+        val = self.coordinator.data.get(self.field)
+        # Ensure numeric values are returned for energy sensors
+        try:
+            if val is None:
+                return None
+            return float(val)
+        except (TypeError, ValueError):
+            return val
 
     @property
     def unit_of_measurement(self):
